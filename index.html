@@ -16,19 +16,29 @@
 
         //EQUAL TEMPERAMENTS:
         //Starts at C1:
-        COctaves = [32.703, 65.406, 130.813, 261.626, 523.251, 1046.502, 2093.005]
+        COctaves = [32.703, 65.406, 130.813, 261.626, 523.251, 1046.502, 2093.005];
         //Starts at Db1
-        DbOctaves = [34.648, 69.296, 138.591, 277.183, 554.365, 1108.731, 2217.461]//, 4434.922];
+        DbOctaves = [34.648, 69.296, 138.591, 277.183, 554.365, 1108.731, 2217.461];//, 4434.922];
         //Starts at D1
-        DOctaves = [36.708, 73.416, 146.832, 293.665, 587.330, 1174.659, 2349.318]//, 4698.636];
+        DOctaves = [36.708, 73.416, 146.832, 293.665, 587.330, 1174.659, 2349.318];//, 4698.636];
         //Starts at Eb1
-        EbOctaves = [38.891, 77.782, 155.563, 311.127, 622.254, 1244.508, 2489.016]//, 4978.032]
+        EbOctaves = [38.891, 77.782, 155.563, 311.127, 622.254, 1244.508, 2489.016];//, 4978.032];
+        //Starts at E1
+        EOctaves = [41.203, 82.407, 164.814, 329.628, 659.255, 1318.51, 2637.02];//, 5274.041];
+        //Starts at F1
+        FOctaves = [43.654, 87.307, 174.614, 349.228, 698.456, 1396.913, 2793.826];//, 5587.62];
         //Starts at F#1
         GbOctaves = [46.249, 92.499, 184.997, 369.994, 739.989, 1479.978, 2959.955];
         //Starts at G1
         GOctaves = [48.999, 97.999, 195.998, 391.995, 783.991, 1567.982, 3135.963];
+        //Starts at Ab1
+        AbOctaves = [51.913, 103.826, 207.652, 415.305, 830.609, 1661.219, 3322.438];//, 6644.875];
         //Starts at A1
         AOctaves = [55, 110, 220, 440, 880, 1760, 3520];
+        //Starts at Bb1
+        BbOctaves = [58.270, 116.541, 233.082, 466.164, 932.328, 1864.655, 3729.310]
+        //Starts at B1
+        BOctaves = [61.735, 123.471, 246.942, 493.833, 987.767, 1975.533, 3951.066];//, 7902.133], B0: 30.868
 
         CEqual = COctaves;
         GEqual = GOctaves;
@@ -105,7 +115,7 @@
 
         //This function will play 7 notes at once:
         function allNotes(noteArray, time) {
-          polySynth.volume.value = -20;
+          polySynth.volume.value = 0;
           polySynth.triggerAttackRelease([noteArray[0], noteArray[1],
             noteArray[2], noteArray[3], noteArray[4], noteArray[5],
             noteArray[6]], 0.50, time);
@@ -121,33 +131,12 @@
             synthArray[i].volume.value = newVolumes[i]
             synthArray[i].triggerAttackRelease(notesArray[i], 0.5, time);
           }
-          /*
-          synth1.triggerAttackRelease(notesArray[0], 0.5, time);
-          synth2.triggerAttackRelease(notesArray[1], 0.5, time);
-          synth3.triggerAttackRelease(notesArray[2], 0.5, time);
-          synth4.triggerAttackRelease(notesArray[3], 0.5, time);
-          synth5.triggerAttackRelease(notesArray[4], 0.5, time);
-          synth6.triggerAttackRelease(notesArray[5], 0.5, time);
-          synth7.triggerAttackRelease(notesArray[6], 0.5, time);
-          */
         }
-
-        //PLAYING SPECIFC NOTES:
-        //order it will play:
-        orderNotesArray = [CEqual, GEqual, AEqual];
-        orderTritonesArray = [CEqualTritone, GEqualTritone, AEqualTritone];
-
-        /*for(i=0; i<orderNotesArray; i++) {
-          allNotes(orderNotesArray[i], now + i*1);
-          allNotes(orderTritonesArray[i], now + 0.50 + i*1);
-        }*/
 
         console.log("Current order is C, G, A, F#, Eb");
         //C
         function play(noteArray, tritoneArray) {
           const now = 0.50+Tone.now();
-          //allNotes(noteArray, now+0.5);
-          //allNotes(tritoneArray, now+1);
           makeTones(noteArray, now+0.5);
           makeTones(tritoneArray, now+1);
         }
@@ -166,21 +155,33 @@
 
 
       </script>
+      <button onclick="play(COctaves, GbOctaves)">Play C </button>
+      <!-- <button onclick="playAlt(COctaves, GbOctaves)">Play Alt C </button> !-->
+      <br>
+      <button onclick="play(EbOctaves, AOctaves)">Play Eb</button>
+      <!-- <button onclick="playAlt(EbOctaves, AOctaves)">Play Alt Eb</button> !-->
+      <br>
+      <button onclick="play(AbOctaves, DOctaves)">Play Ab </button>
+      <br>
+      <button onclick="play(DbOctaves, GOctaves)">Play Db</button>
+      <!-- <button onclick="playAlt(Dbctaves, GOctaves)">Play Alt Db</button> !-->
+      <br>
+      <button onclick="play(BOctaves, FOctaves)">Play B </button>
+      <br>
+      <button onclick="play(GbOctaves, COctaves)">Play Gb</button>
+      <br>
+      <button onclick="play(DOctaves, AbOctaves)">Play D </button>
+      <!-- <button onclick="playAlt(DOctaves, AbOctaves)">Play Alt D </button> !-->
+      <br>
+      <button onclick="play(EOctaves, BbOctaves)">Play E </button>
+      <!-- <button onclick="playAlt(EOctaves, BbOctaves)">Play Alt E </button> !-->
+      <br>
+      <button onclick="play(AOctaves, EbOctaves)">Play A </button>
+      <br>
+      <button onclick="play(FOctaves, BOctaves)">Play F </button>
+      <br>
+      <button onclick="play(GOctaves, DbOctaves)">Play G </button>
 
-      <button onclick="play(CEqual, CEqualTritone)">Play C </button>
-      <button onclick="playAlt(CEqual, CEqualTritone)">Play Alt C </button>
-      <br>
-      <button onclick="play(GEqual, GEqualTritone)">Play G </button>
-      <button onclick="playAlt(GEqual, GEqualTritone)">Play Alt G </button>
-      <br>
-      <button onclick="play(AEqual, AEqualTritone)">Play A </button>
-      <button onclick="playAlt(AEqual, AEqualTritone)">Play Alt A </button>
-      <br>
-      <button onclick="play(CEqual, CEqualTritone)">Play Gb</button>
-      <button onclick="playAlt(CEqual, CEqualTritone)">Play Alt Gb</button>
-      <br>
-      <button onclick="play(AEqualTritone, AEqual)">Play Eb </button>
-      <button onclick="playAlt(AEqualTritone, AEqual)">Play Alt Eb </button>
 
     </body>
 
