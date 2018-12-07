@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <title>Tritone Paradox</title>
+  </head>
+    <body>
+      <h1>Tritone Paradox</h1>
+      <p>A demonstration by Jane Plomp</p>
+      <h2>This program is currently in development</h2>
+
+
+      <script src="js/tone.js"></script>
+
+      <script>
+      //Gotta import math for some calculations...
+      function play() {
+        //EQUAL TEMPERAMENTS:
+        //Starts at C1:
+        COctaves = [32.703, 65.406, 130.813, 261.626, 523.251, 1046.502, 2093.005]
+        //Starts at Db1?
+        DbOctaves = [69.296, 138.591, 277.183, 554.365, 1108.731, 2217.461, 4434.922];
+        //Starts at D2
+        DOctaves = [73.416, 146.832, 293.665, 587.330, 1174.659, 2349.318, 4698.636];
+        //Starts at D#2
+        EbOctaves = [77.782, 155.563, 311.127, 622.254, 1244.508, 2489.016, 4978.032]
+        //Starts at F#1
+        GbOctaves = [46.249, 92.499, 184.997, 369.994, 739.989, 1479.978, 2959.955];
+        //Starts at G1
+        GOctaves = [48.999, 97.999, 195.998, 391.995, 783.991, 1567.982, 3135.963];
+        //Starts at A1
+        AOctaves = [55, 110, 220, 440, 880, 1760, 3520];
+
+        CEqual = COctaves;
+        GEqual = GOctaves;
+        AEqual = AOctaves;
+        CEqualTritone = GbOctaves
+        AbTritone = DbOctaves
+        GEqualTritone = DbOctaves;
+        //Starts at D#2
+        AEqualTritone = EbOctaves;
+        //JUST INTONATION:
+        //Function to find just intonations:
+        function findJust(startNote, newArray) {
+          for (i=0; i<7; i++) {
+            trueNote = startNote;
+            newArray.push(trueNote);
+            startNote = trueNote*2;
+          }
+        }
+        function findJustTritone(startArray, newArray) {
+          for (i=0; i<startArray.length; i++) {
+            trueNote = startArray[i]*(7/5);
+            newArray.push(trueNote);
+          }
+        }
+        //Finding the specific arrays
+        CJust = [];
+        GJust = [];
+        CJustTritone = [];
+        GJustTritone = [];
+        findJust(CEqual[0],CJust);
+        findJustTritone(CJust,CJustTritone)
+        findJust(GEqual[0],GJust);
+        findJustTritone(GJust,GJustTritone)
+
+        //Creating a spectral envelope!
+        function volume(newArray, frequencyArray) {
+          for(i=0; i<frequencyArray.length; i++) {
+            //Equation taken from Deutsch, North, & Ray, 1990
+            //volume = 0.5 - 0.05*Math.cos(((2*Math.PI)/frequencyArray.length)*Math.log2(frequencyArray[i]/frequencyArray[0]))
+            //My own random bell curve equation:
+            //volume = (1/(20*(Math.sqrt(2*Math.PI))))*Math.exp(-0.5*Math.pow(((frequencyArray[i]-523)/20),2));
+            volume = 10*Math.exp(-(Math.pow(frequencyArray[i]-523,2)/Math.pow(2*2)))
+            newArray.push(volume);
+          }
+        }
+        CJustVolumes = [];
+        volume(CJustVolumes, CJust);
+
+        console.log(GEqual);
+        console.log(GJust);
+        console.log(GEqualTritone);
+        console.log(GJustTritone);
+        console.log(CJustVolumes);
+
+        //Preparing to play actual tones:
+        var polySynth = new Tone.PolySynth(7, Tone.Synth).toMaster();
+        const now = 0.50+Tone.now();
+        //This function will play 7 notes at once:
+        function allNotes(noteArray, time) {
+          polySynth.volume.value = -20;
+          polySynth.triggerAttackRelease([noteArray[0], noteArray[1],
+            noteArray[2], noteArray[3], noteArray[4], noteArray[5],
+            noteArray[6]], 0.50, time);
+        }
+
+        //PLAYING SPECIFC NOTES:
+        //order it will play:
+        orderNotesArray = [CEqual, GEqual, AEqual];
+        orderTritonesArray = [CEqualTritone, GEqualTritone, AEqualTritone];
+
+        /*for(i=0; i<orderNotesArray; i++) {
+          allNotes(orderNotesArray[i], now + i*1);
+          allNotes(orderTritonesArray[i], now + 0.50 + i*1);
+        }*/
+
+        console.log("Current order is C, G, A, F#, Eb");
+        //C
+        allNotes(CEqual, now+0.5);
+        allNotes(CEqualTritone, now+1);
+        //G
+        allNotes(GEqual, now+3.5);
+        allNotes(GEqualTritone, now+4);
+        //A
+        allNotes(AEqual, now+6.5);
+        allNotes(AEqualTritone, now+7);
+        //Gb
+        allNotes(CEqualTritone, now+9.5);
+        allNotes(CEqual, now+10);
+
+        allNotes(AEqualTritone, now+12.5);
+        allNotes(AEqual, now+13);
+
+
+        /*
+        allNotes(GEqual, now+3.5)
+        allNotes(GEqualTritone, now+4)
+        */
+
+
+      }
+
+
+      </script>
+
+      <button onclick="play()">Play</button>
+
+    </body>
+
+</html>
