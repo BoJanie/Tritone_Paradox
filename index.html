@@ -16,13 +16,13 @@
 
         //EQUAL TEMPERAMENTS:
         //Starts at C1:
-        COctaves = [32.703, 65.406, 130.813, 261.626, 523.251, 1046.502, 2093.005];
+        COctaves = [65.406, 130.813, 261.626, 523.251, 1046.502, 2093.005, 4186.009];//C1: 32.703
         //Starts at Db1
-        DbOctaves = [34.648, 69.296, 138.591, 277.183, 554.365, 1108.731, 2217.461];//, 4434.922];
+        DbOctaves = [69.296, 138.591, 277.183, 554.365, 1108.731, 2217.461, 4434.922];//, 4434.922]; Db1: 34.648
         //Starts at D1
-        DOctaves = [36.708, 73.416, 146.832, 293.665, 587.330, 1174.659, 2349.318];//, 4698.636];
+        DOctaves = [73.416, 146.832, 293.665, 587.330, 1174.659, 2349.318, 4698.636];//, 4698.636]; D1: 36.708,
         //Starts at Eb1
-        EbOctaves = [38.891, 77.782, 155.563, 311.127, 622.254, 1244.508, 2489.016];//, 4978.032];
+        EbOctaves = [77.782, 155.563, 311.127, 622.254, 1244.508, 2489.016, 4978.032];//, 4978.032]; E1:38.891
         //Starts at E1
         EOctaves = [41.203, 82.407, 164.814, 329.628, 659.255, 1318.51, 2637.02];//, 5274.041];
         //Starts at F1
@@ -39,6 +39,9 @@
         BbOctaves = [58.270, 116.541, 233.082, 466.164, 932.328, 1864.655, 3729.310]
         //Starts at B1
         BOctaves = [61.735, 123.471, 246.942, 493.833, 987.767, 1975.533, 3951.066];//, 7902.133], B0: 30.868
+
+        Octaves = [COctaves, DbOctaves, DOctaves, EbOctaves, EOctaves, FOctaves,
+          GbOctaves, GOctaves, AbOctaves, AOctaves, BbOctaves, BOctaves]
 
         CEqual = COctaves;
         GEqual = GOctaves;
@@ -58,40 +61,91 @@
           }
         }
         function findJustTritone(startArray, newArray) {
-          for (i=0; i<startArray.length; i++) {
-            trueNote = startArray[i]*(7/5);
-            newArray.push(trueNote);
+          if(startArray[0] >46){
+            newArray.push(startArray[0]*(5/7));
+            for (i=0; i<(startArray.length-1); i++) {
+              trueNote = startArray[i]*(7/5);
+              newArray.push(trueNote);
+            }
+          } else {
+            for (i=0; i<startArray.length; i++) {
+              trueNote = startArray[i]*(7/5);
+              newArray.push(trueNote);
+            }
           }
         }
         //Finding the specific arrays
         CJust = [];
+        DbJust = [];
+        DJust = [];
+        EbJust = [];
+        EJust = [];
+        FJust = [];
+        GbJust = [];
         GJust = [];
+        AbJust = [];
+        AJust = [];
+        BbJust = [];
+        BJust = [];
+        CJustTritone = [];
+        DbJustTritone = [];
+        DJustTritone = [];
+        EbJustTritone = [];
+        EJustTritone = [];
+        FJustTritone = [];
+        GbJustTritone = [];
+        GJustTritone = [];
+        AbJustTritone = [];
+        AJustTritone = [];
+        BbJustTritone = [];
+        BJustTritone = [];
+
+        justArrays = [CJust, DbJust, DJust, EbJust, EJust, FJust, GbJust,
+          GJust, AbJust, AJust, BbJust, BJust];
+        justTritoneArrays = [CJustTritone, DbJustTritone, DJustTritone,
+          EbJustTritone, EJustTritone, FJustTritone, GbJustTritone, GJustTritone,
+          AbJustTritone, AJustTritone, BbJustTritone, BJustTritone];
+        for(n=0; n<justArrays.length; n++) {
+          OGArray = Octaves[n];
+          startNote = OGArray[0];
+          newNotesArray = justArrays[n];
+          newTritoneArray = justTritoneArrays[n];
+          findJust(startNote, newNotesArray);
+          findJustTritone(newNotesArray, newTritoneArray);
+          //console.log("OGArray: " + OGArray);
+          OGTritone = Octaves[(n+5)%12]
+          console.log(OGTritone);
+          console.log(newTritoneArray);
+          //console.log("newNotesArray: " + newNotesArray);
+          //console.log("newTritoneArray: " +newTritoneArray);
+        }
+        /*
+        OGArray = Octaves[7];
+        startNote = OGArray[0]
+        newNotesArray = justArrays[7]
+        newTritoneArray = justTritoneArrays[7]
+        findJust(startNote, newNotesArray);
+        findJustTritone(newNotesArray, newTritoneArray);
+        */ /*
         CJustTritone = [];
         GJustTritone = [];
-        findJust(CEqual[0],CJust);
+        findJust(COctaves[0],CJust);
         findJustTritone(CJust,CJustTritone)
-        findJust(GEqual[0],GJust);
+        findJust(GOctaves[0],GJust);
         findJustTritone(GJust,GJustTritone)
+        */
 
         //Creating a spectral envelope!
         function findVolumes(newArray, frequencyArray) {
           for(i=0; i<frequencyArray.length; i++) {
             //Equation taken from Deutsch, North, & Ray, 1990
-            volume = 0.5 - 0.05*Math.cos(((2*Math.PI)/frequencyArray.length)*Math.log2(frequencyArray[i]/frequencyArray[0]))
-            //My own random bell curve equation:
-            //volume = (1/(20*(Math.sqrt(2*Math.PI))))*Math.exp(-0.5*Math.pow(((frequencyArray[i]-523)/20),2));
-            //volume = 10*Math.exp(-(Math.pow(frequencyArray[i]-523,2)/Math.pow(2*2)))
-            multVolume = 1*volume;
+            volume = 0.5 - 0.05*Math.cos(((2*Math.PI)/frequencyArray.length)*Math.log2(frequencyArray[i]/32))
+            multVolume = volume;
             newArray.push(multVolume);
           }
         }
         CJustVolumes = [];
         findVolumes(CJustVolumes, CJust);
-
-        console.log(GEqual);
-        console.log(GJust);
-        console.log(GEqualTritone);
-        console.log(GJustTritone);
         console.log(CJustVolumes);
 
         //Preparing to play actual tones:
@@ -121,24 +175,34 @@
             noteArray[6]], 0.50, time);
         }
 
+        fakeVolumes = [-35, -10, -5, 0, -5, -10, -35]//[0.05, 0.20, 0.50, 0.61, 0.50, 0.20, 0.05]
+        fakeVolumesTri = [-20, -8, -5, -5, -8, -20]//[0.01, 0.10, 0.30, 0.55, 0.70, 0.55, 0.30,]
         //New form that will play individual tones together:
         function makeTones(notesArray, time) {
           newVolumes = []
           findVolumes(newVolumes, notesArray);
           for(i=0; i<7; i++){
             //synthVolArray[i].volume.value = newVolumes[i]
-            console.log("Volume for note " + (i+1) + " is " + newVolumes[i]);
-            synthArray[i].volume.value = newVolumes[i]
+            console.log("Volume for note " + (i+1) + " is " + fakeVolumes[i]);
+            synthArray[i].volume.value = fakeVolumes[i]
+            synthArray[i].triggerAttackRelease(notesArray[i], 0.5, time);
+          }
+        }
+        function makeTritones(notesArray, time) {
+          newVolumes = []
+          findVolumes(newVolumes, notesArray);
+          for(i=0; i<7; i++){
+            //synthVolArray[i].volume.value = newVolumes[i]
+            console.log("Volume for note " + (i+1) + " is " + fakeVolumes[i]);
+            synthArray[i].volume.value = fakeVolumes[i]
             synthArray[i].triggerAttackRelease(notesArray[i], 0.5, time);
           }
         }
 
-        console.log("Current order is C, G, A, F#, Eb");
-        //C
         function play(noteArray, tritoneArray) {
           const now = 0.50+Tone.now();
           makeTones(noteArray, now+0.5);
-          makeTones(tritoneArray, now+1);
+          makeTritones(tritoneArray, now+1);
         }
         function playAlt(noteArray, tritoneArray) {
           const now = 0.50+Tone.now();
@@ -146,25 +210,113 @@
           allNotes(tritoneArray, now+1);
         }
 
-        /*
-        allNotes(GEqual, now+3.5)
-        allNotes(GEqualTritone, now+4)
-        */
-
-
-
-
       </script>
-      <button onclick="play(COctaves, GbOctaves)">Play C </button>
-      <!-- <button onclick="playAlt(COctaves, GbOctaves)">Play Alt C </button> !-->
+      <h4> Equal Temperament ||| Just Intonation <br>
+        <form>
+          <button onclick="play(COctaves, GbOctaves)">----------Play C----------</button>
+          <button onclick="play(CJust, CJustTritone)">----------Play C----------</button>
+          <input type="radio" id="CDir" name="CDir" value=1>up
+          <input type="radio" id="CDir" name="CDir" value=0>down
+          <br>
+          <button onclick="play(EbOctaves, AOctaves)">---------Play Eb----------</button>
+          <button onclick="play(EbJust, EbJustTritone)">---------Play Eb----------</button>
+          <input type="radio" id="EbDir" name="EbDir" value="up">up
+          <input type="radio" id="EbDir" name="EbDir" value="down">down
+          <br>
+          <button onclick="play(AbOctaves, DOctaves)">----------Play Ab---------</button>
+          <button onclick="play(AbJust, AbJustTritone)">----------Play Ab---------</button>
+          <input type="radio" id="AbDir" name="AbDir" value="up">up
+          <input type="radio" id="AbDir" name="AbDir" value="down">down
+          <br>
+          <button onclick="play(DbOctaves, GOctaves)">----------Play Db---------</button>
+          <button onclick="play(DbJust, DbJustTritone)">----------Play Db---------</button>
+          <input type="radio" id="DbDir" name="DbDir"value="up">up
+          <input type="radio" id="DbDir" name="DbDir" value="down">down
+          <br>
+          <button onclick="play(BOctaves, FOctaves)">----------Play B----------</button>
+          <button onclick="play(BJust, BJustTritone)">----------Play B----------</button>
+          <input type="radio" id="BDir" name="BDir" value="up">up
+          <input type="radio" id="BDir" name="BDir" value="down">down
+          <br>
+          <button onclick="play(GbOctaves, COctaves)">---------Play Gb---------</button>
+          <button onclick="play(GbJust, GbJustTritone)">----------Play Gb---------</button>
+          <input type="radio" id="GbDir" name="Gb" value="up">up
+          <input type="radio" id="GbDir" name="Gb" value="down">down
+          <br>
+          <button onclick="play(BbOctaves, EOctaves)">---------Play Bb---------</button>
+          <button onclick="play(BbJust, BbJustTritone)">----------Play Bb---------</button>
+          <input type="radio" id="BbDir" name="Bb" value="up">up
+          <input type="radio" id="BbDir" name="Bb" value="down">down
+          <br>
+          <button onclick="play(DOctaves, AbOctaves)">----------Play D----------</button>
+          <button onclick="play(DJust, DJustTritone)">----------Play D----------</button>
+          <input type="radio" id="DDir" name="DDir" value="up">up
+          <input type="radio" id="DDir" name="DDir" value="down">down
+          <br>
+          <button onclick="play(EOctaves, BbOctaves)">----------Play E----------</button>
+          <button onclick="play(EJust, EJustTritone)">----------Play E----------</button>
+          <input type="radio" id="EDir" name="EDir" value="up">up
+          <input type="radio" id="EDir" name="EDir" value="down">down
+          <br>
+          <button onclick="play(AOctaves, EbOctaves)">----------Play A----------</button>
+          <button onclick="play(AJust, AJustTritone)">----------Play A----------</button>
+          <input type="radio" id="ADir" name="ADir" value="up">up
+          <input type="radio" id="ADir" name="ADir" value="down">down
+          <br>
+          <button onclick="play(FOctaves, BOctaves)">----------Play F----------</button>
+          <button onclick="play(FJust, FJustTritone)">----------Play F----------</button>
+          <input type="radio" id="FDir" name="FDir" value="up">up
+          <input type="radio" id="FDir" name="FDir" value="down">down
+          <br>
+          <button onclick="play(GOctaves, DbOctaves)">----------Play G----------</button>
+          <button onclick="play(GJust, GJustTritone)">----------Play G----------</button>
+          <input type="radio" id="GDir" name="GDir" value="up">up
+          <input type="radio" id="GDir" name="GDir" value="down">down
+          <br>
+          <button type="button" id="submit">Submit</button>
+        </form>
+          <div id = "C"></div>
+          <div id = "Db"></div>
+          <div id = "D"></div>
+          <div id = "Eb"></div>
+          <div id = "E"></div>
+          <div id = "F"></div>
+          <div id = "Gb"></div>
+          <div id = "G"></div>
+          <div id = "Ab"></div>
+          <div id = "A"></div>
+          <div id = "Bb"></div>
+          <div id = "B"></div>
+
+
+
+      <script>
+      function summarize() {
+        var tempC = document.getElementById("CDir").value
+        document.getElementById("C").innerHTML = tempC
+        document.getElementById("Db").innerHTML = document.getElementById("DbDir").value
+        document.getElementById("D").innerHTML = document.getElementById("DDir").value
+        document.getElementById("Eb").innerHTML = document.getElementById("EbDir").value
+        document.getElementById("E").innerHTML = document.getElementById("EDir").value
+        document.getElementById("F").innerHTML = document.getElementById("FDir").value
+        document.getElementById("Gb").innerHTML = document.getElementById("GbDir").value
+        document.getElementById("G").innerHTML = document.getElementById("GDir").value
+        document.getElementById("Ab").innerHTML = document.getElementById("AbDir").value
+        document.getElementById("A").innerHTML = document.getElementById("ADir").value
+        document.getElementById("Bb").innerHTML = document.getElementById("BbDir").value
+        document.getElementById("B").innerHTML = document.getElementById("BDir").value
+      }
+
+      document.getElementById('submit').addEventListener('click',summarize)
+      </script>
+
+      <!--
       <br>
       <button onclick="play(EbOctaves, AOctaves)">Play Eb</button>
-      <!-- <button onclick="playAlt(EbOctaves, AOctaves)">Play Alt Eb</button> !-->
       <br>
       <button onclick="play(AbOctaves, DOctaves)">Play Ab </button>
       <br>
       <button onclick="play(DbOctaves, GOctaves)">Play Db</button>
-      <!-- <button onclick="playAlt(Dbctaves, GOctaves)">Play Alt Db</button> !-->
       <br>
       <button onclick="play(BOctaves, FOctaves)">Play B </button>
       <br>
@@ -173,17 +325,17 @@
       <button onclick="play(BbOctaves, EOctaves)">Play Bb</button>
       <br>
       <button onclick="play(DOctaves, AbOctaves)">Play D </button>
-      <!-- <button onclick="playAlt(DOctaves, AbOctaves)">Play Alt D </button> !-->
       <br>
       <button onclick="play(EOctaves, BbOctaves)">Play E </button>
-      <!-- <button onclick="playAlt(EOctaves, BbOctaves)">Play Alt E </button> !-->
       <br>
       <button onclick="play(AOctaves, EbOctaves)">Play A </button>
       <br>
       <button onclick="play(FOctaves, BOctaves)">Play F </button>
       <br>
       <button onclick="play(GOctaves, DbOctaves)">Play G </button>
-
+      !-->
+      <!--<hr>
+      <input type="submit" value="Submit"> !-->
 
     </body>
 
