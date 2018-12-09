@@ -11,6 +11,7 @@
 
 
       <script src="js/tone.js"></script>
+      <script src="js/Chart.js"></script>
 
       <script>
 
@@ -297,6 +298,7 @@
           </select>
           <br>
           <button type="button" id="submit">Submit</button>
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
           <div id = "C"></div>
           <div id = "Db"></div>
           <div id = "D"></div>
@@ -309,10 +311,19 @@
           <div id = "A"></div>
           <div id = "Bb"></div>
           <div id = "B"></div>
+        <canvas id="totalGraph" height="120"></canvas>
+        <canvas id="individualGraph" height="50"></canvas>
 
 
 
       <script>
+      function upDown(value) {
+        if(value==1) {
+          return "Up"
+        } else {
+          return "Down"
+        }
+      }
       var totalC = 0
       var totalDb = 0
       var totalD = 0
@@ -325,86 +336,132 @@
       var totalA = 0
       var totalBb = 0
       var totalB = 0
+      var responses = 0
       function summarize() {
+        responses = responses + 1
+
         var tempC = parseInt(document.getElementById("CDir").value)
         totalC = totalC + tempC
-        document.getElementById("C").innerHTML = totalC
-
         var tempDb = parseInt(document.getElementById("DbDir").value)
         totalDb = totalDb + tempDb
-        document.getElementById("Db").innerHTML = totalDb
-
         var tempD = parseInt(document.getElementById("DDir").value)
         totalD = totalD + tempD
-        document.getElementById("D").innerHTML = totalD
-
         var tempEb = parseInt(document.getElementById("EbDir").value)
         totalEb = totalEb + tempEb
-        document.getElementById("Eb").innerHTML = totalEb
-
         var tempE = parseInt(document.getElementById("EDir").value)
         totalE = totalE + tempE
-        document.getElementById("E").innerHTML = totalE
-
         var tempF = parseInt(document.getElementById("FDir").value)
         totalF = totalF + tempF
-        document.getElementById("F").innerHTML = totalF
-
         var tempGb = parseInt(document.getElementById("GbDir").value)
         totalGb = totalGb + tempGb
-        document.getElementById("Gb").innerHTML = totalGb
-
         var tempG = parseInt(document.getElementById("GDir").value)
         totalG = totalG + tempG
-        document.getElementById("G").innerHTML = totalG
-
         var tempAb = parseInt(document.getElementById("AbDir").value)
         totalAb = totalAb + tempAb
-        document.getElementById("Ab").innerHTML = totalAb
-
         var tempA = parseInt(document.getElementById("ADir").value)
         totalA = totalA + tempA
-        document.getElementById("A").innerHTML = totalA
-
         var tempBb = parseInt(document.getElementById("BbDir").value)
         totalBb = totalBb + tempBb
-        document.getElementById("Bb").innerHTML = totalBb
-
         var tempB = parseInt(document.getElementById("BDir").value)
         totalB = totalB + tempB
-        document.getElementById("B").innerHTML = totalB
+        /*
+        document.getElementById("C").innerHTML =
+        "C : " + Math.round(totalC/responses*100) + "% thought it was going up. Your response: " + upDown(tempC)
+        document.getElementById("Db").innerHTML =
+        "Db: " + Math.round(totalDb/responses*100) + "% thought it was going up. Your response: " + upDown(tempDb)
+        document.getElementById("D").innerHTML =
+        "D : " + Math.round(totalD/responses*100) + "% thought it was going up. Your response: " + upDown(tempD)
+        document.getElementById("Eb").innerHTML =
+        "Eb: " + Math.round(totalEb/responses*100) + "% thought it was going up. Your response: " + upDown(tempEb)
+        document.getElementById("E").innerHTML =
+        "E : " + Math.round(totalE/responses*100) + "% thought it was going up. Your response: " + upDown(tempE)
+        document.getElementById("F").innerHTML =
+        "F : " + Math.round(totalF/responses*100) + "% thought it was going up. Your response: " + upDown(tempF)
+        document.getElementById("Gb").innerHTML =
+        "Gb: " + Math.round(totalGb/responses*100) + "% thought it was going up. Your response: " + upDown(tempGb)
+        document.getElementById("G").innerHTML =
+        "G : " + Math.round(totalG/responses*100) + "% thought it was going up. Your response: " + upDown(tempG)
+        document.getElementById("Ab").innerHTML =
+        "Ab: " + Math.round(totalAb/responses*100) + "% thought it was going up. Your response: " + upDown(tempAb)
+        document.getElementById("A").innerHTML =
+        "A : " + Math.round(totalA/responses*100) + "% thought it was going up. Your response: " + upDown(tempA)
+        document.getElementById("Bb").innerHTML =
+        "Bb: " + Math.round(totalBb/responses*100) + "% thought it was going up. Your response: " + upDown(tempBb)
+        document.getElementById("B").innerHTML =
+        "B : " + Math.round(totalB/responses*100) + "% thought it was going up. Your response: " + upDown(tempB)
+        */
+        var ctx = document.getElementById("totalGraph").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"],
+                datasets: [{
+                    label: '# who thought note went up',
+                    data: [totalC, totalDb, totalD, totalEb, totalE, totalF, totalGb, totalG, totalAb, totalA, totalBb, totalB],
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 1)', //red
+                        'rgba(225, 40, 40, 1)',
+                        'rgba(255, 127, 0, 1)',
+                        'rgba(250, 200, 0, 1)',
+                        'rgba(255, 255, 0, 1)', //yellow
+                        'rgba(155, 255, 0, 1)',
+                        'rgba(0, 255, 0, 1)', //green
+                        'rgba(0, 191, 51, 1)',
+                        'rgba(0, 100, 255, 1)',
+                        'rgba(0, 0, 255, 1)', //blue
+                        'rgba(70, 0, 255, 1)',
+                        'rgba(70, 0, 135, 1)', //indigo
+                    ],
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        var ctx2 = document.getElementById("individualGraph").getContext('2d');
+        var myChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"],
+                datasets: [{
+                    label: 'When you thought it went up:',
+                    data: [tempC, tempDb, tempD, tempEb, tempE, tempF, tempGb, tempG, tempAb, tempA, tempBb, tempB],
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 1)', //red
+                        'rgba(225, 40, 40, 1)',
+                        'rgba(255, 127, 0, 1)',
+                        'rgba(250, 200, 0, 1)',
+                        'rgba(255, 255, 0, 1)', //yellow
+                        'rgba(155, 255, 0, 1)',
+                        'rgba(0, 255, 0, 1)', //green
+                        'rgba(0, 191, 51, 1)',
+                        'rgba(0, 100, 255, 1)',
+                        'rgba(0, 0, 255, 1)', //blue
+                        'rgba(70, 0, 255, 1)',
+                        'rgba(70, 0, 135, 1)', //indigo
+                    ],
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
       }
 
       document.getElementById('submit').addEventListener('click',summarize)
       </script>
-
-      <!--
-      <br>
-      <button onclick="play(EbOctaves, AOctaves)">Play Eb</button>
-      <br>
-      <button onclick="play(AbOctaves, DOctaves)">Play Ab </button>
-      <br>
-      <button onclick="play(DbOctaves, GOctaves)">Play Db</button>
-      <br>
-      <button onclick="play(BOctaves, FOctaves)">Play B </button>
-      <br>
-      <button onclick="play(GbOctaves, COctaves)">Play Gb</button>
-      <br>
-      <button onclick="play(BbOctaves, EOctaves)">Play Bb</button>
-      <br>
-      <button onclick="play(DOctaves, AbOctaves)">Play D </button>
-      <br>
-      <button onclick="play(EOctaves, BbOctaves)">Play E </button>
-      <br>
-      <button onclick="play(AOctaves, EbOctaves)">Play A </button>
-      <br>
-      <button onclick="play(FOctaves, BOctaves)">Play F </button>
-      <br>
-      <button onclick="play(GOctaves, DbOctaves)">Play G </button>
-      !-->
-      <!--<hr>
-      <input type="submit" value="Submit"> !-->
-
     </body>
 
 </html>
