@@ -7,7 +7,11 @@
     <body>
       <h1>Tritone Paradox</h1>
       <p>A demonstration by Jane Plomp</p>
-      <h2>This program is currently in development</h2>
+      <p>Thanks for checking this out! This program is meant to demonstrate the tritone paradox.</p>
+      <p>Please click on each button to hear a series of two tones.</p>
+      <p>Then choose whether the second tone sounds like it is going up or down from the first one.</p>
+      <p>After you have listened and responded to each one, click submit.</p>
+      <p>Then you can see how others have responded compared to you!</p>
 
 
       <script src="js/tone.js"></script>
@@ -176,8 +180,8 @@
             noteArray[6]], 0.50, time);
         }
 
-        fakeVolumes = [-35, -10, -5, 0, -5, -10, -35]//[0.05, 0.20, 0.50, 0.61, 0.50, 0.20, 0.05]
-        fakeVolumesTri = [-20, -8, -5, -5, -8, -20]//[0.01, 0.10, 0.30, 0.55, 0.70, 0.55, 0.30,]
+        fakeVolumes = [-40, -15, -10, 0, -10, -15, -40]
+        fakeVolumesTri = [-25, -12, -5, -5, -12, -25]
         //New form that will play individual tones together:
         function makeTones(notesArray, time) {
           newVolumes = []
@@ -212,86 +216,73 @@
         }
 
       </script>
-      <h4> Equal Temperament ||| Just Intonation <br>
-          <button onclick="play(COctaves, GbOctaves)">----------Play C----------</button>
-          <button onclick="play(CJust, CJustTritone)">----------Play C----------</button>
+          <button onclick="play(COctaves, GbOctaves)">Pair 01</button>
           <select id="CDir",name="CDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(EbOctaves, AOctaves)">---------Play Eb----------</button>
-          <button onclick="play(EbJust, EbJustTritone)">---------Play Eb----------</button>
+          <button onclick="play(EbOctaves, AOctaves)">Pair 02</button>
           <select id="EbDir",name="EbDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(AbOctaves, DOctaves)">----------Play Ab---------</button>
-          <button onclick="play(AbJust, AbJustTritone)">----------Play Ab---------</button>
+          <button onclick="play(AbOctaves, DOctaves)">Pair 03</button>
           <select id="AbDir",name="AbDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(DbOctaves, GOctaves)">----------Play Db---------</button>
-          <button onclick="play(DbJust, DbJustTritone)">----------Play Db---------</button>
+          <button onclick="play(DbOctaves, GOctaves)">Pair 04</button>
           <select id="DbDir",name="DbDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(BOctaves, FOctaves)">----------Play B----------</button>
-          <button onclick="play(BJust, BJustTritone)">----------Play B----------</button>
+          <button onclick="play(BOctaves, FOctaves)">Pair 05</button>
           <select id="BDir",name="BDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(GbOctaves, COctaves)">---------Play Gb---------</button>
-          <button onclick="play(GbJust, GbJustTritone)">----------Play Gb---------</button>
+          <button onclick="play(GbOctaves, COctaves)">Pair 06</button>
           <select id="GbDir",name="GbDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(BbOctaves, EOctaves)">---------Play Bb---------</button>
-          <button onclick="play(BbJust, BbJustTritone)">----------Play Bb---------</button>
+          <button onclick="play(BbOctaves, EOctaves)">Pair 07</button>
           <select id="BbDir",name="BbDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(DOctaves, AbOctaves)">----------Play D----------</button>
-          <button onclick="play(DJust, DJustTritone)">----------Play D----------</button>
+          <button onclick="play(DOctaves, AbOctaves)">Pair 08</button>
           <select id="DDir",name="DDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(EOctaves, BbOctaves)">----------Play E----------</button>
-          <button onclick="play(EJust, EJustTritone)">----------Play E----------</button>
+          <button onclick="play(EOctaves, BbOctaves)">Pair 09</button>
           <select id="EDir",name="EDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(AOctaves, EbOctaves)">----------Play A----------</button>
-          <button onclick="play(AJust, AJustTritone)">----------Play A----------</button>
+          <button onclick="play(AOctaves, EbOctaves)">Pair 10</button>
           <select id="ADir",name="ADir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(FOctaves, BOctaves)">----------Play F----------</button>
-          <button onclick="play(FJust, FJustTritone)">----------Play F----------</button>
+          <button onclick="play(FOctaves, BOctaves)">Pair 11</button>
           <select id="FDir",name="FDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
           </select>
           <br>
-          <button onclick="play(GOctaves, DbOctaves)">----------Play G----------</button>
-          <button onclick="play(GJust, GJustTritone)">----------Play G----------</button>
+          <button onclick="play(GOctaves, DbOctaves)">Pair 12</button>
           <select id="GDir",name="GDir">
             <option value=1>Up</option>
             <option value=0>Down</option>
